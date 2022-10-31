@@ -9,8 +9,13 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
+
 import os
 from pathlib import Path
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-jl50w3uq7sc&%hl8ja^b76sr0^4v0*6k_4s#!p=bt22=&2q(2s'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -83,9 +88,9 @@ WSGI_APPLICATION = 'petstagram.wsgi.application'
 DATABASES = {
     'default': {
           'ENGINE': 'django.db.backends.postgresql',
-          'NAME': 'petstagram-db',
-          'USER': 'Mimi',
-          'PASSWORD': 'postpass',
+          'NAME': env('DATABASE_NAME'),
+          'USER': env('DATABASE_USER'),
+          'PASSWORD': env('DATABASE_PASS'),
           'HOST': '127.0.0.1',
           'PORT': '5432',
     }
