@@ -1,12 +1,26 @@
 from django.shortcuts import render
+from django.views import generic
+from django.contrib.auth import views
+from django.urls import reverse_lazy
+from petstagram.accounts.forms import PetstagramUserCreateForm, LoginForm
+from petstagram.accounts.models import PetstagramUser
 
 
-def register_user(request):
-    return render(request, 'accounts/register-page.html')
+class UserRegisterView(generic.CreateView):
+    model = PetstagramUser
+    form_class = PetstagramUserCreateForm
+    template_name = 'accounts/register-page.html'
+    success_url = reverse_lazy('user login')
 
 
-def login_user(request):
-    return render(request, 'accounts/login-page.html')
+class UserLoginView(views.LoginView):
+    form_class = LoginForm
+    template_name = 'accounts/login-page.html'
+    next_page = reverse_lazy('show home page')
+
+
+class UserLogoutView(views.LogoutView):
+    next_page = reverse_lazy('show home page')
 
 
 def details_profile(request, pk):
