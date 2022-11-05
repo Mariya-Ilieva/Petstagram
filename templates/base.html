@@ -47,17 +47,10 @@
                         </a>
                     </li>
                     <li class="nav-item">
-
+                    {% if not request.user.is_authenticated %}
                         <!-- Link to Login Page -->
                         <a href="{% url 'user login' %}">
                             <i>Login</i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-
-                        <!-- Link to Logout Page -->
-                        <a href="{% url 'user logout' %}">
-                            <i>Logout</i>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -67,13 +60,22 @@
                             <i>Register</i>
                         </a>
                     </li>
+                    {% else %}
                     <li class="nav-item">
 
                         <!-- Link to Profile Page -->
-                        <a href="{% url 'profile details' 1 %}">
+                        <a href="{% url 'profile details' request.user.pk %}">
                             <i>Profile</i>
                         </a>
                     </li>
+                    <li class="nav-item">
+
+                        <!-- Link to Logout Page -->
+                        <a href="{% url 'user logout' %}">
+                            <i>Logout</i>
+                        </a>
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>

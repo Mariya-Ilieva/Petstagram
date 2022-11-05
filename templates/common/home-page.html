@@ -23,20 +23,24 @@
                 <div class="top">
                     <div class="userDetails">
                         <!-- Link to User Profile Page -->
-                        <a href="#">
+                        <a href="{% url 'profile details' photo.user.pk %}">
                             <div class="profilepic">
                                 <div class="profile_img">
                                     <div class="image">
+                                        {% if photo.user.profile_picture %}
+                                        <img src="{{ photo.user.profile_picture }}" alt="img8">
+                                        {% else %}
                                         <img src="{% static "images/person.png" %}" alt="img8">
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
                         </a>
                         <h3>
                             <!-- Link to User Profile Page -->
-                            <a href="{% url 'profile details' 1 %}">
+                            <a href="{% url 'profile details' photo.user.pk %}">
                                 <!-- if user has first name and last name -->
-                                Diyan Kalaydzhiev
+                                {{ photo.user.first_name|default_if_none:'' }} {{ photo.user.last_name|default_if_none:'' }}
                                 <!-- else -->
                                 <!-- show user username -->
                             </a>
@@ -64,7 +68,7 @@
                             <span class="heart">
 									<a href="{% url 'like' photo.id %}">
 										<!-- if user has liked the photo -->
-                                        {% if photo.like_set.all %}
+                                        {% if photo.id in all_liked_photos %}
                                         <svg style="color: red"
                                              xmlns="http://www.w3.org/2000/svg"
                                              width="24"
@@ -135,7 +139,7 @@
                     <!-- Start Tagged Pets -->
                     {% for pet in photo.tagged_pet.all %}
                     <!-- Link to First Tagged Pet Details Page-->
-                    <a href="{% url 'details pet' 'username' pet.slug %}">
+                    <a href="{% url 'details pet' pet.user.username pet.slug %}">
                         <p class="message">
                             <b>{{ pet.name }}</b>
                         </p>

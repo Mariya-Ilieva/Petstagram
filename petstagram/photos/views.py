@@ -6,7 +6,9 @@ from petstagram.photos.forms import PhotoCreateForm, PhotoEditForm
 def add_photo(request):
     form = PhotoCreateForm(request.POST or None, request.FILES or None)
     if form.is_valid():
-        form.save()
+        photo = form.save(commit=False)
+        photo.user = request.user
+        photo.save()
         return redirect('show home page')
     return render(request, 'photos/photo-add-page.html', {'form': form})
 
@@ -14,11 +16,13 @@ def add_photo(request):
 def details_photo(request, pk):
     photo = Photo.objects.get(pk=pk)
     likes = photo.like_set.all()
+    photo_is_liked = likes.filter(user=request.user)
     comments = photo.comment_set.all()
     context = {
         'photo': photo,
         'likes': likes,
         'comments': comments,
+        'photo_is_liked': photo_is_liked,
     }
     return render(request, 'photos/photo-details-page.html', context=context)
 
