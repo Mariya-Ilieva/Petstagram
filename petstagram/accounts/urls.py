@@ -9,6 +9,6 @@ urlpatterns = [
         [
             path('', views.UserDetailsView.as_view(), name='profile details'),
             path('edit/', views.UserEditView.as_view(), name='profile edit'),
-            path('delete/', views.delete_profile, name='profile delete'),
+            path('delete/', views.UserDeleteView.as_view(), name='profile delete'),
         ])),
 ]
