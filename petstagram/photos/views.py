@@ -9,7 +9,8 @@ def add_photo(request):
         photo = form.save(commit=False)
         photo.user = request.user
         photo.save()
-        return redirect('show home page')
+        form.save_m2m()
+        return redirect('details photo', pk=photo.pk)
     return render(request, 'photos/photo-add-page.html', {'form': form})
 
 

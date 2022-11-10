@@ -27,7 +27,11 @@
                             <!-- Link to User Profile Details Page -->
                             <a href="#">
                                 <!-- IF user has first name and last name -->
-                                Diyan Kalaydzhiev
+                                 {% if photo.user.get_full_name %}
+                                    {{ photo.user.get_full_name }}
+                                {% else %}
+                                    {{ photo.user.username }}
+                                {% endif %}
                                 <!-- else -->
                                 <!-- show user username -->
                             </a>

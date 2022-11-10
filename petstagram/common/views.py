@@ -10,7 +10,7 @@ def show_home_page(request):
     comment_form = CommentForm()
     search_form = SearchForm()
     user = request.user
-    all_liked_photos = [like.to_photo for like in user.like_set.all()]
+    all_liked_photos = all_photos
 
     if request.method == 'POST':
         search_form = SearchForm(request.POST)
