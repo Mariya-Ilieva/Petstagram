@@ -14,7 +14,6 @@
                 </button>
             </form>
             <!-- End Searchbar Form -->
-            {% for photo in all_photos %}
             <!-- Start Pet Photos Post Section -->
             <!-- Start First Pet Photo Post -->
             <div class="card">
@@ -23,7 +22,7 @@
                 <div class="top">
                     <div class="userDetails">
                         <!-- Link to User Profile Page -->
-                        <a href="{% url 'profile details' photo.user.pk %}">
+                        <a href="{% url 'profile details' pk=1 %}">
                             <div class="profilepic">
                                 <div class="profile_img">
                                     <div class="image">
@@ -38,7 +37,7 @@
                         </a>
                         <h3>
                             <!-- Link to User Profile Page -->
-                            <a href="{% url 'profile details' photo.user.pk %}">
+                            <a href="{% url 'profile details' pk=1 %}">
                                 <!-- if user has first name and last name -->
                                 {{ photo.user.first_name|default_if_none:'' }} {{ photo.user.last_name|default_if_none:'' }}
                                 <!-- else -->
@@ -66,7 +65,7 @@
                         <div class="left">
                             <!-- Start Like Button -->
                             <span class="heart">
-									<a href="{% url 'like' photo.id %}">
+									<a href="{% url 'like' 1 %}">
 										<!-- if user has liked the photo -->
                                         {% if photo.id in all_liked_photos %}
                                         <svg style="color: red"
@@ -114,7 +113,7 @@
                             <!-- End Like Button -->
 
                             <!-- Start Share Button -->
-                            <a href="{% url 'share' photo.id %}">
+                            <a href="{% url 'share' 1 %}">
                                 <svg aria-label="Share Post" class="_8-yf5 " color="#262626" fill="#262626"
                                      height="24" role="img" viewBox="0 0 48 48" width="24">
                                     <path d="M47.8 3.8c-.3-.5-.8-.8-1.3-.8h-45C.9 3.1.3
@@ -148,7 +147,7 @@
                     <!-- End Tagged Pets -->
 
                     <!-- Link to Photo Details Page -->
-                    <a href="{% url 'details photo' photo.pk %}">
+                    <a href="{% url 'details photo' 1 %}">
                         <h4 class="details">See details</h4>
                     </a>
 
@@ -163,7 +162,7 @@
                             </h3>
                         </div>
                         <!-- Start Add Comments Form -->
-                        <form method="post" action="{% url 'add comment' photo.id %}">
+                        <form method="post" action="{% url 'add comment' 1 %}">
                             {% csrf_token %}
                             {{ comment_form }}
                             <button type="submit">Post</button>
@@ -176,9 +175,7 @@
                 </div>
             </div>
             <!-- End First Pet Photo Post -->
-
             <!-- End Pet Photos Post Section -->
-            {% endfor %}
         </div>
     </div>
 {% endblock %}
