@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.core.paginator import Paginator
 from django.views import generic
 from django.contrib.auth import views
 from django.urls import reverse_lazy
@@ -30,9 +30,16 @@ class UserDetailsView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         total_likes = sum(p.like_set.count() for p in self.object.photo_set.all())
+        photos = self.object.photo_set.all()
+        paginator = Paginator(photos, 2)
+        page_number = self.request.GET.get('page') or 1
+        page_object = paginator.get_page(page_number)
 
         context.update({
             'total_likes': total_likes,
+            'paginator': paginator,
+            'page_number': page_number,
+            'page_object': page_object,
         })
 
         return context

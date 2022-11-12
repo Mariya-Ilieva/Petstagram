@@ -146,6 +146,12 @@ AUTH_USER_MODEL = 'accounts.PetstagramUser'
 
 LOGIN_REDIRECT_URL = reverse_lazy('show home page')
 
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'no.reply.petstagram@gmail.com'
+EMAIL_HOST_PASSWORD = 'gqhidvelyurzdxcfvghbn'
+EMAIL_PORT = 587
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
