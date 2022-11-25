@@ -9,9 +9,9 @@ def add_pet(request):
     form = PetForm(request.POST or None)
     if form.is_valid():
         pet = form.save(commit=False)
-        pet.user = request.user
+        PetstagramUser = request.user
         pet.save()
-        return redirect('profile details', pk=1)
+        return redirect('profile details', pk=PetstagramUser.pk)
     return render(request, 'pets/pet-add-page.html', {'form': form})
 
 
