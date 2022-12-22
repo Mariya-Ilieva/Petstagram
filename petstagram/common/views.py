@@ -6,7 +6,6 @@ from petstagram.photos.models import Photo
 
 
 def show_home_page(request):
-    user = request.user
     all_photos = Photo.objects.all()
     comment_form = CommentForm()
     search_form = SearchForm()
