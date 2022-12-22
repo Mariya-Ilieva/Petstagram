@@ -4,15 +4,9 @@
 {% block content %}
     <div class="container">
         <div class="col-9">
-
-            <!-- Start Pet Photo Post Section -->
             <div class="card">
                 <div class="top">
-
-                    <!-- Start User Details and Image Location Section -->
                     <div class="userDetails">
-
-                        <!-- Link to User Profile Details Page-->
                         <a href="#">
                             <div class="profilepic">
                                 <div class="profile_img">
@@ -23,67 +17,37 @@
                             </div>
                         </a>
                         <h3>
-
-                            <!-- Link to User Profile Details Page -->
                             <a href="#">
-                                <!-- IF user has first name and last name -->
                                  {% if photo.user.get_full_name %}
                                     {{ photo.user.get_full_name }}
                                 {% else %}
                                     {{ photo.user.username }}
                                 {% endif %}
-                                <!-- else -->
-                                <!-- show user username -->
                             </a>
                             <br>
-
-                            <!-- IF the photo has location -->
                             {% if photo.location %}
                                 <span>{{ photo.location }}</span>
                             {% endif %}
-
-                            <!-- IF the viewer is the creator of the photo -->
                             <div class="edit-delete-btns">
-
-                                <!-- Link to Edit Pet Photo Page -->
                                 <a href="{% url 'edit photo' photo.id %}">
                                     <img class="edit-img" src="{% static "images/edit-pen-icon-6.jpg" %}"
                                          alt="edit button">
                                 </a>
-
-                                <!-- Link to Delete Pet Photo Page -->
                                 <a href="{% url 'delete photo' photo.id %}">
                                     <img class="bin-img" src="{% static "images/icon-remove-22.jpg" %}" alt="bin button">
                                 </a>
                             </div>
-                            <!-- End IF the viewer is the creator of the photo -->
-
                         </h3>
                     </div>
-                    <!-- End User Details and Image Location Section -->
-
                 </div>
-
-                <!-- Start Pet Photo -->
                 <div class="imgBx" id="photo-{{ photo.id }}">
-                    <!-- Pet Photo -->
                     <img src="media/{{ photo.photo }}" alt="{{ photo.tagged_pets.all|join:', ' }}" class="cover">
                 </div>
-                <!-- End Pet Photo -->
-
                 <div class="bottom">
-
-                    <!-- Start Like and Share Buttons Section -->
                     <div class="actionBtns">
                         <div class="left">
-
-                            <!-- Start Like Button -->
                             <span class="heart">
-
-                                    <!-- Link to Like Path -->
 									<a href="{% url 'like' photo.id %}">
-
-										<!-- IF user has liked the photo -->
                                         {% if likes %}
                                         <svg style="color: red"
                                              xmlns="http://www.w3.org/2000/svg"
@@ -92,15 +56,12 @@
                                              fill="currentColor"
                                              class="bi bi-heart-fill"
                                              viewBox="0 0 16 16">
-                                            <!-- Coordinate path -->
                                             <path fill-rule="evenodd"
                                                   d="M8 1.314C12.438-3.248 23.534 4.735
                                                   8 15-7.534 4.736 3.562-3.248 8 1.314z"
                                                   fill="red">
                                             </path>
                                         </svg>
-
-                                        <!-- IF NOT user has liked the photo -->
                                         {% else %}
                                         <svg aria-label="Like"
                                              color="#262626"
@@ -110,7 +71,6 @@
                                              viewBox="0 0 48 48"
                                              width="24">
                                         {% endif %}
-                                        <!-- Coordinate path -->
                                         <path d="M34.6 6.1c5.7 0 10.4 5.2 10.4
                                                     11.5 0 6.8-5.9 11-11.5 16S25 41.3 24
                                                     41.9c-1.1-.7-4.7-4-9.5-8.3-5.7-5-11.5-9.2-11.5-16C3
@@ -127,11 +87,6 @@
                                         </svg>
 								    </a>
                             </span>
-                            <!-- End Like Button -->
-
-                            <!-- Start Share  Button -->
-
-                            <!-- Link to Share Path -->
                             <a href="{% url 'share' photo.id %}">
                                 <svg aria-label="Share Post" class="_8-yf5 " color="#262626" fill="#262626"
                                      height="24" role="img" viewBox="0 0 48 48" width="24">
@@ -146,32 +101,20 @@
                             </a>
                         </div>
                     </div>
-                    <!-- End Like and Share Buttons Section -->
-
-                    <!-- Number of Likes for the Photo -->
                     <p class="likes">{{ likes.count }} likes</p>
-
-                    <!-- Start Tagged Pets Section-->
                     {% for pet in photo.tagged_pet.all %}
-                    <!-- Link to First Tagged Pet Details Page -->
                     <a href="{% url 'details pet' 'username' pet.slug %}">
                         <p class="message">
                             <b>{{ pet.name }}</b>
                         </p>
                     </a>
-                    <!-- Link to Second Tagged Pet Details Page -->
                     <a href="{% url 'details pet' 'username' pet.slug %}">
                         <p class="message">
                             <b>Some other fish</b>
                         </p>
                     </a>
-                    <!-- End Tagged Pets Section-->
                     {% endfor %}
-
-                    <!-- Date of Publication or edit of the Photo -->
                     <h5 class="postTime">{{ photo.date_of_publication }}</h5>
-
-                    <!-- Start Comments Section -->
                     {% for comment in comments %}
                     <div class="comments">
                         <div class="top">
@@ -180,16 +123,12 @@
                                     <div class="profilepic">
                                         <div class="profile_img">
                                             <div class="image">
-                                                <!-- User Profile Image -->
                                                 <img src="{% static "images/person.png" %}" alt="img8">
                                             </div>
                                         </div>
                                     </div>
                                     <p>
-                                        <!-- Link to User Profile Details Page-->
-                                        <!-- User First and/or Last Name or username-->
                                         <a href="">Steven Ivanov</a>
-                                        <!-- User Comment -->
                                         {{ comment.text }}
                                     </p>
                                 </div>
@@ -197,33 +136,21 @@
                             </div>
                         </div>
                     </div>
-                    <!-- End Comments Section -->
                     {% endfor %}
                 </div>
-
-                <!-- Start Add Comments Section -->
                 <div class="addComments">
                     <div class="reaction">
                         <h3>
                             <i class="far fa-smile"></i>
                         </h3>
                     </div>
-
-                    <!-- Start Add Comments Form -->
                     <form method="post" action="{% url 'add comment' photo.id %}">
                         {% csrf_token %}
                         {{ comment_form }}
-                        <!-- Post Comments Button -->
                         <button type="submit">Post</button>
                     </form>
-                    <!-- End Add Comments Form -->
-
                 </div>
-                <!-- End Add Comments Section -->
-
             </div>
-            <!-- End Pet Photo Post Section -->
-
         </div>
     </div>
 {% endblock %}
