@@ -1,13 +1,14 @@
 from django.core.paginator import Paginator
 from django.views import generic
-from django.contrib.auth import views
+from django.contrib.auth import views, get_user_model
 from django.urls import reverse_lazy
 from petstagram.accounts.forms import PetstagramUserCreateForm, PetstagramUserEditForm, LoginForm
-from petstagram.accounts.models import PetstagramUser
+
+UserModel = get_user_model()
 
 
 class UserRegisterView(generic.CreateView):
-    model = PetstagramUser
+    model = UserModel
     form_class = PetstagramUserCreateForm
     template_name = 'accounts/register-page.html'
     success_url = reverse_lazy('user login')
@@ -24,29 +25,32 @@ class UserLogoutView(views.LogoutView):
 
 
 class UserDetailsView(generic.DetailView):
-    model = PetstagramUser
+    model = UserModel
     template_name = 'accounts/profile-details-page.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        total_likes = sum(p.like_set.count() for p in self.object.photo_set.all())
-        photos = self.object.photo_set.all()
-        paginator = Paginator(photos, 2)
+        photos = self.object.photo_set.prefetch_related('like_set')
+        total_likes = sum(photo.like_set.count() for photo in photos)
+        paginated_photos =  self.object.photo_set.all()
+        paginator = Paginator(paginated_photos, 2)
         page_number = self.request.GET.get('page') or 1
         page_object = paginator.get_page(page_number)
+        pets_count = self.object.pet_set.count()
 
         context.update({
             'total_likes': total_likes,
             'paginator': paginator,
             'page_number': page_number,
             'page_object': page_object,
+            'pets_count': pets_count,
         })
 
         return context
 
 
 class UserEditView(generic.UpdateView):
-    model = PetstagramUser
+    model = UserModel
     form_class = PetstagramUserEditForm
     template_name = 'accounts/profile-edit-page.html'
 
@@ -55,7 +59,7 @@ class UserEditView(generic.UpdateView):
 
 
 class UserDeleteView(generic.DeleteView):
-    model = PetstagramUser
+    model = UserModel
     template_name = 'accounts/profile-delete-page.html'
     next_page = reverse_lazy('show home page')
 
